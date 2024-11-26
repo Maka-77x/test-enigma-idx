@@ -1,0 +1,45 @@
+#!/bin/bash
+
+APP_HOME=$HOME/.setup-idx; \
+APP_PATH=$APP_HOME/app; \
+SCRIPTS_PATH=$APP_PATH/cmd
+
+if [ ! -d $APP_HOME ]; then mkdir $APP_HOME; fi;
+
+if [ -d $APP_PATH ]; then rm -rf $APP_PATH; fi;
+
+git clone --depth 1 https://github.com/sikancil/setup-idx.git $APP_PATH
+
+sleep 1
+
+cp $APP_PATH/install_setup-idx $APP_HOME/; \
+cp $APP_PATH/uninstall_setup-idx $APP_HOME/; \
+cp $APP_PATH/update_setup-idx $APP_HOME/
+
+cp $SCRIPTS_PATH/*.sh $APP_HOME/; \
+mv $APP_HOME/setup-idx.sh $APP_HOME/setup-idx
+
+chmod +x $APP_HOME/setup-idx; \
+chmod +x $APP_HOME/*.sh
+
+echo "📝 Adding Setup IDX to ~/.bashrc..."
+ADD_TO_PATH="export PATH=\$HOME/.setup-idx:\$PATH"
+
+# Check if the content exists in ~/.bashrc
+if grep -q "$ADD_TO_PATH" ~/.bashrc; then
+  echo "📝 Setup IDX exists in ~/.bashrc..."
+else
+  echo -e "$ADD_TO_PATH" >> ~/.bashrc 
+  echo "📝 Setup IDX newly added to ~/.bashrc"
+fi
+
+source $HOME/.bashrc
+
+echo "🎉 NEXT, to:"
+echo "   🚀 Run       : setup-idx"
+echo "                    or"
+echo "                  ~/.setup-idx/setup-idx"
+echo "   🚀 Update    : setup-idx"
+echo "                  👉 then choose 5 to Update"
+echo "   🚀 Uninstall : setup-idx"
+echo "                  👉 then choose 6 to Uninstall"
